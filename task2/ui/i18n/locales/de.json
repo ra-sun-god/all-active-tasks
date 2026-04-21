@@ -1,0 +1,44 @@
+{
+  "auth": {
+    "login": "Anmelden",
+    "signup": "Registrieren",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "name": "Name",
+    "loginBtn": "Anmelden",
+    "logoutBtn": "Abmelden",
+    "signupBtn": "Konto erstellen",
+    "noAccount": "Noch kein Konto?",
+    "haveAccount": "Schon ein Konto?"
+  },
+  "collections": {
+    "myCollections": "Meine Sammlungen",
+    "new": "Neue Sammlung",
+    "noCollections": "Noch keine Sammlungen",
+    "publicCollectionsOf": "Öffentliche Sammlungen von {userId}",
+    "noPublicCollections": "Keine öffentlichen Sammlungen",
+    "entityCount": "{count} Entität | {count} Entitäten",
+    "createdAt": "Erstellt am {date}",
+    "public": "Öffentlich",
+    "private": "Privat",
+    "thumbnailAlt": "Sammlungsvorschaubild",
+    "noImage": "Kein Bild",
+    "entities": "Entitäten",
+    "addEntity": "Entität hinzufügen",
+    "noEntities": "Noch keine Entitäten in dieser Sammlung.",
+    "searchEntity": "Entität suchen",
+    "searchPlaceholder": "Entitätsnamen eingeben..."
+  },
+  "common": {
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "loading": "Laden...",
+    "confirm_delete": "Löschen bestätigen",
+    "delete_collection": "Möchten Sie diese Sammlung löschen?",
+    "confirm": "Bestätigen",
+    "remove": "Entfernen",
+    "cancel": "Abbrechen",
+    "select": "Auswählen",
+    "places": "Schöne Orte"
+  }
+}

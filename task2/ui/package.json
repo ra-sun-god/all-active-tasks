@@ -1,0 +1,26 @@
+{
+  "name": "ui",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@intlify/unplugin-vue-i18n": "^11.0.7",
+    "@nuxtjs/i18n": "^10.2.4",
+    "@nuxtjs/tailwindcss": "^6.14.0",
+    "notivue": "^2.4.5",
+    "nuxt": "^4.4.2",
+    "sweetalert2": "^11.26.24",
+    "vue": "^3.5.32",
+    "vue-router": "^5.0.4",
+    "vue-sweetalert2": "^5.0.11"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0"
+  }
+}

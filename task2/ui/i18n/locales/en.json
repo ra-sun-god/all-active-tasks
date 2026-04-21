@@ -1,0 +1,44 @@
+{
+  "auth": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "name":     "Name",
+    "loginBtn": "Sign In",
+    "signupBtn": "Create Account",
+    "logoutBtn": "Logout",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?"
+  },
+  "collections": {
+    "myCollections": "My Collections",
+    "new": "New Collection",
+    "noCollections": "No collections yet",
+    "publicCollectionsOf": "Public collections of {userId}",
+    "noPublicCollections": "No public collections",
+    "entityCount": "{count} entity | {count} entities",
+    "createdAt": "Created {date}",
+    "public": "Public",
+    "private": "Private",
+    "thumbnailAlt": "Collection thumbnail",
+    "noImage": "No image",
+    "entities": "Entities",
+    "addEntity": "Add Entity",
+    "noEntities": "No entities in this collection yet.",
+    "searchEntity": "Search for entity",
+    "searchPlaceholder": "Type entity name..."
+  },
+  "common": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "loading": "Loading...",
+    "confirm_delete": "Confirm Delete",
+    "delete_collection": "This collection will be deleted?",
+    "confirm": "Confirm",
+    "remove": "Remove",
+    "cancel": "Cancel",
+    "select": "Select",
+    "places": "Places"
+  }
+}
