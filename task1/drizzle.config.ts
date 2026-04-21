@@ -9,7 +9,7 @@ export default defineConfig({
   schema: './src/db/schema/index.ts',  
   out: './drizzle',                    
   dbCredentials: {
-    url: path.resolve(__dirname+"/.database/collections_db.sqlite"),     
+    url: path.resolve(__dirname+"/.database/collections_db.sqlite")   
   },
   // Optional: Enable verbose logging for migrations
   verbose: true,
