@@ -5,12 +5,11 @@ import path from 'path';
 config({ path: path.resolve(__dirname, './.env') });
 
 export default defineConfig({
-  dialect: 'turso',
+  dialect: 'sqlite',
   schema: './src/db/schema/index.ts',  
   out: './drizzle',                    
   dbCredentials: {
-    url: process.env.DATABASE_URL!,     
-    authToken: process.env.DATABASE_AUTH_TOKEN!,
+    url: path.resolve(__dirname+"/.database/collections_db.sqlite"),     
   },
   // Optional: Enable verbose logging for migrations
   verbose: true,

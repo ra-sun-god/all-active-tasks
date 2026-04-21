@@ -1,9 +1,20 @@
-import { drizzle } from "drizzle-orm/libsql/node";
-import "../utils/load-dot-env"
+// db.ts
+import { drizzle } from 'drizzle-orm/better-sqlite3';
+import Database from 'better-sqlite3';
+import path from 'path';
+import { entities, permissions, reviews, rolePermissions, roles, userRoles, users } from './schema';
 
-export const db = drizzle({
-  connection: {
-    url: process.env.DATABASE_URL!,
-    authToken: process.env.DATABASE_AUTH_TOKEN!,
-  },
+const dbPath = path.resolve(__dirname + "/../../.database/collections_db.sqlite")
+
+const sqlite = new Database(dbPath);
+export const db = drizzle(sqlite, {
+  schema: {
+    ...users,
+    ...entities,
+    ...reviews,
+    ...roles,
+    ...permissions,
+    ...rolePermissions,
+    ...userRoles
+  }
 });
