@@ -1,7 +1,31 @@
 /task1/drizzle
 /task1/node_modules
-/task2/drizzle
-/task2/node_modules
-/task2/server/node_modules
 /task2/server/drizzle
+/task2/server/node_modules
+
+
+# Nuxt dev/build outputs
+/task2/ui/.output
+/task2/ui/.data
+/task2/ui/.nuxt
+/task2/ui/.nitro
+/task2/ui/.cache
+/task2/ui/dist
+
+# Node dependencies
+/task2/ui/node_modules
+
+# Logs
+/task2/ui/logs
+/task2/ui/*.log
+
+# Misc
+/task2/ui/.DS_Store
+/task2/ui/.fleet
+/task2/ui/.idea
+
+# Local env files
+/task2/ui/.env
+/task2/ui/.env.*
+/task2/ui/!.env.example
 /task2/server/.database
