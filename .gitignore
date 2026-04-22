@@ -28,5 +28,5 @@
 /task2/ui/.env
 /task2/ui/.env.*
 /task2/ui/!.env.example
-/task2/server/.database
-/task1/.database
+task1/.database/collections_db.sqlite
+task2/server/.database/collections_db.sqlite
