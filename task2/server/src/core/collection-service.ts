@@ -125,7 +125,7 @@ export class CreateCollectionService {
   
   async getCollectionEntities(
     collectionId: string,
-    requestingUserId: string | null,
+    requestingUserId: string | null | undefined,
     limit: number,
     offset: number
   ): 
