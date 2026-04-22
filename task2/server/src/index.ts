@@ -22,7 +22,8 @@ const {
   sslCert,
   sslKey,
   sessionSecret,
-  corsOrigins
+  corsOrigins,
+  cookieDomain
 } = serverConfig;
 
 const fastOpts: FastifyServerOptions = {
@@ -73,6 +74,7 @@ async function startServer() {
       httpOnly: true,
       sameSite: 'none',      
       maxAge: 7 * 24 * 60 * 60 * 1000,
+      domain: cookieDomain
     },
     store
   });
