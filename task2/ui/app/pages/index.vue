@@ -167,13 +167,9 @@ function handleModalClose() {
 
 async function handleSubmit(data: any) {
   if (selected.value) {
-    updateCollection(selected.value.id, data).then(newData => {
-      if(newData != null){
-        updateCollectionInPlace(newData.id, newData)
-      }
-    })
+    await updateCollection(selected.value.id, data)
   } else {
-    await createCollection(data.title, data.description, data.isPublic)
+     await createCollection(data.title, data.description, data.isPublic)
   }
   handleModalClose()
 }

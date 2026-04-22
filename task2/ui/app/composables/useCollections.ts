@@ -84,11 +84,17 @@ export function useCollections() {
     isProcessing.value = true
     processingError.value = null
     try {
-      collection.value = await api<Collection>('/collections', {
+
+      const newData = await api<Collection>('/collections', {
         method: 'POST',
         body: { title, description, isPublic },
       })
-      return collection.value
+
+       await updateCollectionInPlace(newData.id, newData)
+
+      collection.value = newData;
+
+      return newData;
     } catch (err: any) {
       processingError.value = err?.data?.message || 'Failed to create collection'
       throw err
@@ -104,11 +110,17 @@ export function useCollections() {
     isProcessing.value = true
     processingError.value = null
     try {
-      collection.value = await api<Collection>(`/collections/${id}`, {
+
+      const newData = await api<Collection>(`/collections/${id}`, {
         method: 'PATCH',
         body: payload,
       })
-      return collection.value
+
+      collection.value = newData;
+
+      await updateCollectionInPlace(newData.id, newData)
+
+      return newData
     } catch (err: any) {
       processingError.value = err?.data?.message || 'Failed to update collection'
       throw err
