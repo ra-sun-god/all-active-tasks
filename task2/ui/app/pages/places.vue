@@ -208,7 +208,7 @@
                             <svg v-if="isInCollection(entity, col.id)" xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                               <path d="M20 6 9 17l-5-5"/>
                             </svg>
-                            <span v-else class="text-[10px] text-gray-400 flex-shrink-0">{{ col.entities?.length ?? 0 }}</span>
+                            <!--<span v-else class="text-[10px] text-gray-400 flex-shrink-0">{{ col.entities?.length ?? 0 }}</span>-->
                           </button>
                         </li>
                       </ul>

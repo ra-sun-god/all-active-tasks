@@ -1,80 +1,18 @@
-# Project Setup & Usage
 
-This project is built with **Fastify**, **Drizzle ORM**, and **SQLite**.
-
----
-
-## 📦 Installation
-
-```bash
-npm install
-```
-
----
-
-## 🚀 Available Commands
-
-### Development
-
-```bash
-npm run dev
-```
-
-* Runs the app in watch mode using `tsx`
-* Pretty-prints logs with `pino-pretty`
-
-### Start (Production-like)
-
-```bash
-npm start
-```
-
-* Starts Fastify server via CLI
-
----
-
-### 🧪 Testing
-
-```bash
-npm test
-```
-
-* Runs tests using Vitest
-
----
-
-### 🗄️ Database Commands
-
-#### Generate Migrations
-
-```bash
-npm run db:generate
-```
-
-#### Run Migrations
-
-```bash
-npm run db:migrate
-```
-
-* Generates + applies migrations
-
-#### Seed Database
-
-```bash
-npm run db:seed
-```
-
-* Inserts predefined users into the database
-
----
 
 ## Demo 
 
-- url: https://task2.libertypie.com/
+- url: ()[https://task2.libertypie.com]
 
 - Frontend deployed on Cloudflare Pages 
 - Backend deployed on my VPS
+
+### Public List example (no login)
+- (https://task2.libertypie.com/public/f10925ed-d6d7-4a41-9875-b2d7a9932cec)[https://task2.libertypie.com/public/f10925ed-d6d7-4a41-9875-b2d7a9932cec]
+
+### Public collection example (no login)
+- (https://task2.libertypie.com/public/collection/c78dd1bb-2a72-401b-834c-e6e2a7b04422)[https://task2.libertypie.com/public/collection/c78dd1bb-2a72-401b-834c-e6e2a7b04422]
+
 
 Login and Passwords Below
 
