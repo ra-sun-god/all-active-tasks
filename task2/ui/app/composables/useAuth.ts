@@ -2,18 +2,19 @@ import { useApi } from './useApi'
 import type { Login, Signup } from '~/types';
 
 export const useAuth = () => {
+
   const api = useApi();
   const user = useState<any>('user', () => null);
-  const fetched = useState('auth_fetched', () => false);
+  //const fetched = useState('auth_fetched', () => false);
   const error = useState<string | null>('auth_error', () => null);
   const loading = useState<boolean>('auth_loading', () => false);
   const isAuthenticated = computed(() => !!user.value);
 
   const fetchUser = async () => {
-    if (fetched.value) return;
-    fetched.value = true;
+    if (user.value) return;
     try {
       user.value = await api('/me');
+      return
     } catch {
       user.value = null;
     }
@@ -60,7 +61,6 @@ export const useAuth = () => {
       await api('/logout', { method: 'POST' });
     } catch {}
     user.value = null;
-    fetched.value = false;
     await navigateTo('/login');
   };
 

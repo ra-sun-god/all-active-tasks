@@ -28,6 +28,11 @@ import {
 } from '../types/typebox-schemas';
 
 export async function collectionRoutes(app: FastifyInstance) {
+  
+  app.get('/api/csrf-token', (request, reply) => {
+    const token = reply.generateCsrf()
+    reply.send({ csrfToken: token })
+  })
 
   app.post<SignupSchemaType>(
     '/api/signup',

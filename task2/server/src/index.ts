@@ -11,6 +11,8 @@ import { CreateCollectionService } from './core/collection-service';
 import cors from '@fastify/cors'
 import { collectionRoutes } from './core/collection-route';
 import sessionFileStore from 'session-file-store'
+import csrf from '@fastify/csrf-protection'
+import handleCSRFValidation from './middlewares/csrf';
 
 const isProduction = process.env.NODE_ENV != "development";
 
@@ -22,8 +24,7 @@ const {
   sslCert,
   sslKey,
   sessionSecret,
-  corsOrigins,
-  cookieDomain
+  corsOrigins
 } = serverConfig;
 
 const fastOpts: FastifyServerOptions = {
@@ -43,7 +44,7 @@ async function startServer() {
   
   // Register CORS first, before cookie/session
   await app.register(cors, {
-    origin: corsOrigins, // explicit origin, not `true`, when using credentials
+    origin: corsOrigins,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
   });
@@ -61,25 +62,33 @@ async function startServer() {
 
   // set our sessions database 
   
-    const FileStore = sessionFileStore(session as any)
-    const store =  new FileStore({
-      path: './.database/sessions',
-    })
-  
+  const FileStore = sessionFileStore(session as any)
+  const store =  new FileStore({
+    path: './.database/sessions',
+  })
+
   await app.register(session, {
     secret: sessionSecret,
     saveUninitialized: false,
     cookie: {
-      secure: true,      
+      secure: isProduction,      
       httpOnly: true,
-      sameSite: 'none',      
+      sameSite: isProduction ? 'none' : 'lax',      
       maxAge: 7 * 24 * 60 * 60 * 1000,
-      domain: cookieDomain
+     // domain: cookieDomain
     },
     store
   });
   
+  app.register(csrf, {
+    cookieOpts: {
+      signed: false,
+    }
+  })
   
+  
+  // handleCSRFValidation
+  handleCSRFValidation(app)
   
   // lets register our routes 
   collectionRoutes(app)
