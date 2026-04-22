@@ -12,6 +12,10 @@ import cors from '@fastify/cors'
 import { collectionRoutes } from './core/collection-route';
 //import sessionFileStore from 'session-file-store'
 
+const isProduction = process.env.NODE_ENV != "development";
+
+console.log("isProduction===>", isProduction)
+
 const {
   host,
   port,
@@ -42,6 +46,8 @@ async function startServer() {
     credentials: true,
   });
   
+
+  
   const collectionRepository = new CreateCollectionRepository()
   const collectionService = new CreateCollectionService(collectionRepository)
 
@@ -61,13 +67,15 @@ async function startServer() {
   await app.register(session, {
     secret: sessionSecret,
     cookie: {
-      secure: false,       // true in production (requires HTTPS)
+      secure: isProduction,                 // HTTPS only in prod
       httpOnly: true,
-      sameSite: 'lax',    // required for cross-origin credentialed requests
+      sameSite: isProduction ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     },
     //store
   });
+  
+  
   
   // lets register our routes 
   collectionRoutes(app)
