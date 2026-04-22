@@ -69,6 +69,12 @@ npm run db:seed
 
 ---
 
+## Demo 
+
+- url: https://task2.libertypie.com/
+
+Login and Passwords Below
+
 ## 👤 Seeded Users (Development Only)
 
 | Name    | Email                                             | Password         |
