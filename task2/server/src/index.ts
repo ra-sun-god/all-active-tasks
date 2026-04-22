@@ -27,6 +27,7 @@ const {
 
 const fastOpts: FastifyServerOptions = {
   logger: true,
+  trustProxy: true,
   ...(sslCert && sslKey && {
     https: {
       cert: fs.readFileSync(sslCert),
@@ -69,7 +70,7 @@ async function startServer() {
     cookie: {
       secure: isProduction,                 // HTTPS only in prod
       httpOnly: true,
-      sameSite: 'lax',
+      sameSite: isProduction ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     },
     //store
