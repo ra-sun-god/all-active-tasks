@@ -1,11 +1,15 @@
+
+const isDev = (process.env.NODE_ENV !== 'production')
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  devtools: { enabled: true },
+  devtools: { enabled: isDev },
   modules: [
     '@nuxtjs/i18n',
     '@nuxtjs/tailwindcss',
     'notivue/nuxt',
-    "nitro-cloudflare-dev",
+    'nitro-cloudflare-dev'
+    //...(isDev ?  [] : ['nitro-cloudflare-dev']),
   ],
   css: [
     'notivue/notification.css',
@@ -30,11 +34,12 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      apiBase: process.env.PUBLIC_API_BASE || "https://task2-api.libertypie.com/api"
+      apiBase: (isDev ? 'http://localhost:3030/api' : "https://task2-api.libertypie.com/api")
     }
   },
   nitro: {
-     preset: 'cloudflare-pages'
+    //preset: isDev ? 'node' : 'cloudflare-pages'
+    preset: 'cloudflare-pages'
   },
   ssr: true
 })

@@ -44,38 +44,13 @@
               <p class="text-xs text-gray-400 mt-1.5">
                 <span class="font-medium text-gray-600">{{ entitiesPaging.total.value }}</span>
                 {{ entitiesPaging.total.value === 1 ? 'place' : 'places' }}
-                · Created {{ formatDate(collection.createdAt, locale) }}
+                · Created {{ formatDate(collection.createdAt) }}
               </p>
-
-              <!-- Share URL — only for public collections -->
-              <div v-if="collection.isPublic" class="flex items-center gap-2 mt-3">
-                <div class="flex items-center gap-1.5 bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-500 max-w-xs">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-gray-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-                  </svg>
-                  <span class="truncate font-mono">{{ shareUrl }}</span>
-                </div>
-                <button
-                  @click="copyShareUrl"
-                  class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors duration-150"
-                  :class="copied
-                    ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
-                    : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-300 hover:text-indigo-600 hover:bg-indigo-50'"
-                >
-                  <svg v-if="copied" xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 6 9 17l-5-5"/>
-                  </svg>
-                  <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-                  </svg>
-                  {{ copied ? 'Copied!' : 'Copy link' }}
-                </button>
-              </div>
             </div>
+
           </div>
 
-          <!-- Owner-only actions -->
-          <div v-if="isOwner" class="flex gap-2 flex-shrink-0">
+          <div v-if="!isPublicView" class="flex gap-2 flex-shrink-0">
             <button
               @click="showEditModal = true"
               class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 border border-gray-200 hover:border-gray-300 bg-white px-4 py-2 rounded-lg transition-colors duration-150"
@@ -95,14 +70,9 @@
               Delete
             </button>
           </div>
-
-          <!-- Visitor badge for public collections viewed by non-owners -->
-          <div v-else-if="collection.isPublic" class="flex items-center gap-1.5 text-xs text-gray-400 bg-white border border-gray-200 px-3 py-1.5 rounded-lg flex-shrink-0">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
-            </svg>
-            Viewing as guest
-          </div>
+        </div>
+        <div v-if="collection.isPublic" class="flex items-center gap-2 mt-3">
+          <Sharer :url="shareUrl" />
         </div>
         <div class="h-px bg-gray-100 mt-6" />
       </div>
@@ -127,9 +97,9 @@
         </div>
         <div class="text-center">
           <p class="text-sm font-medium text-gray-700">No places yet</p>
-          <p v-if="isOwner" class="text-xs text-gray-400 mt-1">Browse places and save them to this collection</p>
+          <p class="text-xs text-gray-400 mt-1">Browse places and save them to this collection</p>
         </div>
-        <NuxtLink v-if="isOwner" to="/places" class="inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors duration-150">
+        <NuxtLink to="/places" class="inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors duration-150">
           Browse places
         </NuxtLink>
       </div>
@@ -140,7 +110,7 @@
           v-for="entity in entities"
           :key="entity.id"
           :entity="entity"
-          :is-public-view="!isOwner"
+          :is-public-view="isPublicView"
           @remove="handleRemove"
         />
       </div>
@@ -174,69 +144,53 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import Swal from 'sweetalert2'
 import { useCollections } from '~/composables/useCollections'
-import { useAuth } from '~/composables/useAuth'
 import Pagination from '~/components/Pagination.vue'
 import { push } from 'notivue'
-import { formatDate } from '~/utils'
+import Sharer from '~/components/Sharer.vue'
+import { formatDate, titleToHue } from "~/utils"
 
 const route = useRoute()
 const router = useRouter()
 const { locale } = useI18n()
 const collectionId = route.params.id as string
+const isPublicView = false
 
-const {
-  collection, isFetching, getCollection,
-  updateCollection, deleteCollection, processingError,
-  entities, isFetchingEntities, getCollectionEntities,
-  entitiesPaging, removeEntityFromList, removeFromCollection,
-} = useCollections()
-
-// ── Ownership check ───────────────────────────────────────
-const { user } = useAuth()
-const isOwner = computed(() =>
-  !!user.value && !!collection.value && (collection.value as any).userId === user.value.id
-)
-
-// ── Share URL ─────────────────────────────────────────────
 const shareUrl = computed(() =>
   typeof window !== 'undefined'
-    ? `${window.location.origin}/collections/${collectionId}`
-    : `/collections/${collectionId}`
+    ? `${window.location.origin}/public/collection/${collectionId}`
+    : `/public/collection/${collectionId}`
 )
 
-const copied = ref(false)
-let copyTimeout: ReturnType<typeof setTimeout>
 
-async function copyShareUrl() {
-  try {
-    await navigator.clipboard.writeText(shareUrl.value)
-    copied.value = true
-    clearTimeout(copyTimeout)
-    copyTimeout = setTimeout(() => { copied.value = false }, 2000)
-  } catch {
-    push.error('Could not copy link')
-  }
-}
+const {
+  collection,
+  isFetching,
+  getCollection,
+  updateCollection,
+  deleteCollection,
+  processingError,
+  entities,
+  isFetchingEntities,
+  getCollectionEntities,
+  entitiesPaging,
+  removeEntityFromList,
+  removeFromCollection,
+} = useCollections()
 
-// ── Accent ────────────────────────────────────────────────
-function titleToHue(title: string): number {
-  let hash = 0
-  for (let i = 0; i < title.length; i++) hash = title.charCodeAt(i) + ((hash << 5) - hash)
-  return Math.abs(hash) % 360
-}
+
 const hue = computed(() => titleToHue(collection.value?.title ?? ''))
 const accentGradient = computed(() =>
   `linear-gradient(135deg, hsl(${hue.value}, 70%, 55%), hsl(${(hue.value + 40) % 360}, 65%, 60%))`
 )
 
-// ── Edit ──────────────────────────────────────────────────
+// Edit
 const showEditModal = ref(false)
 async function handleEditSubmit(data: { title: string; description?: string; isPublic: boolean }) {
   await updateCollection(collectionId, data)
   showEditModal.value = false
 }
 
-// ── Delete ────────────────────────────────────────────────
+// Delete
 async function handleDelete() {
   const result = await Swal.fire({
     title: $t('common.confirm_delete'), text: $t('common.delete_collection'),
@@ -248,7 +202,7 @@ async function handleDelete() {
   }
 }
 
-// ── Remove entity ─────────────────────────────────────────
+// Remove entity
 async function handleRemove(entityId: string) {
   const result = await Swal.fire({
     title: 'Remove place?', text: 'This will remove the place from this collection.',
@@ -257,12 +211,17 @@ async function handleRemove(entityId: string) {
   if (result.isConfirmed) {
     await removeFromCollection(collectionId, entityId)
     removeEntityFromList(entityId)
+    // If page is now empty, step back
     if (entities.value.length === 0 && entitiesPaging.currentPage.value > 1) {
       entitiesPaging.goToPage(entitiesPaging.currentPage.value - 1, () => getCollectionEntities(collectionId))
     }
   }
 }
 
+function formatDate(d: string) {
+  if (!d) return ''
+  return new Intl.DateTimeFormat(locale.value, { year: 'numeric', month: 'short', day: 'numeric' }).format(new Date(d))
+}
 
 watch(processingError, (err) => { if (err && err !== '') push.error(err) })
 
@@ -270,6 +229,4 @@ onMounted(() => {
   getCollection(collectionId)
   getCollectionEntities(collectionId)
 })
-
-onUnmounted(() => clearTimeout(copyTimeout))
 </script>

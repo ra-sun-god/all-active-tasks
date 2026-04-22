@@ -1,13 +1,16 @@
 import { useAuth } from "~/composables/useAuth"
 
 export default defineNuxtRouteMiddleware(async (to) => {
-  const { isAuthenticated, fetchUser } = useAuth()
+  const { isAuthenticated, fetchUser, user } = useAuth()
 
   await fetchUser()
 
-  const publicRoutes = ['/login', '/signup', '/collections/public/']
+  console.log("user===>", user.value)
 
-  if (!isAuthenticated.value && !publicRoutes.includes(to.path)) {
+  const publicRoutes = ['/login', '/signup']
+  const isPublicCollection = /\/public\/(collection\/)?([0-9]+)/.test(to.path)
+
+  if (!isAuthenticated.value && !publicRoutes.includes(to.path) && !isPublicCollection) {
     return navigateTo('/login')
   }
 })

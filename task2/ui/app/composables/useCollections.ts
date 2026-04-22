@@ -1,12 +1,12 @@
 import { ref, shallowRef, computed, readonly } from 'vue'
 import type { Collection, Entity } from '~/types'
-import { usePagination  } from './usePagination'
-import { useApi } from './useApi'
+import { usePagination } from "./usePagination"
+
 
 export function useCollections() {
   const api = useApi()
 
-  // ── Collection list ───────────────────────────────────────
+  // ── Collection list
   const collections = shallowRef<Collection[]>([])
   const isFetching = ref(false)
   const fetchingError = ref<string | null>(null)
@@ -39,7 +39,29 @@ export function useCollections() {
     }
   }
 
-  // ── Single collection ─────────────────────────────────────
+  const publicCollections = shallowRef<Collection[]>([])
+  const publicListPaging = usePagination(20)
+  const isFetchingPublic = ref(false)
+
+  const fetchPublicCollections = async (userId: string) => {
+    isFetchingPublic.value = true
+    fetchingError.value = null
+    try {
+      const data = await api<{ collections: Collection[]; total: number }>(
+        `/collections/public/${userId}`,
+        { query: { limit: publicListPaging.limit.value, offset: publicListPaging.offset.value } }
+      )
+      publicCollections.value = data?.collections ?? []
+      publicListPaging.total.value = data?.total ?? 0
+    } catch (err: any) {
+      fetchingError.value = err?.data?.message || 'Failed to fetch public collections'
+      publicCollections.value = []
+    } finally {
+      isFetchingPublic.value = false
+    }
+  }
+
+
   const collection = ref<Collection | null>(null)
   const isProcessing = ref(false)
   const processingError = ref<string | null>(null)
@@ -110,7 +132,7 @@ export function useCollections() {
     }
   }
 
-  // ── Collection entities (paginated) ───────────────────────
+  // ── Collection entities (paginated)
   const entities = shallowRef<Entity[]>([])
   const isFetchingEntities = ref(false)
   const entitiesPaging = usePagination(20)
@@ -138,7 +160,7 @@ export function useCollections() {
     if (entitiesPaging.total.value > 0) entitiesPaging.total.value--
   }
 
-  // ── Entity mutations ──────────────────────────────────────
+  // ── Entity mutationsprocessingError
   const addToCollection = async (collectionId: string, entityId: string, note?: string) => {
     isProcessing.value = true
     processingError.value = null
@@ -171,6 +193,12 @@ export function useCollections() {
   }
 
   return {
+    // ── public collections
+    publicCollections,
+    isFetchingPublic: readonly(isFetchingPublic),
+    fetchPublicCollections,
+    publicListPaging,
+
     // ── collection list
     collections,
     isFetching: readonly(isFetching),
@@ -181,7 +209,7 @@ export function useCollections() {
     listPaging,
 
     // ── single collection
-    collection: (collection),
+    collection: readonly(collection),
     isProcessing: readonly(isProcessing),
     processingError: readonly(processingError),
     getCollection,
@@ -190,7 +218,7 @@ export function useCollections() {
     deleteCollection,
 
     // ── collection entities
-    entities: (entities),
+    entities: readonly(entities),
     isFetchingEntities: readonly(isFetchingEntities),
     getCollectionEntities,
     removeEntityFromList,

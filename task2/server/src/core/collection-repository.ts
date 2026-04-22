@@ -288,12 +288,59 @@ export class CreateCollectionRepository {
 
   // Public collections of a user 
   async findPublicByUserId(userId: string, limit: number, offset: number): Promise<Collection[]> {
-    return await db.select()
+    const result = await db
+      .select({
+        id: collections.id,
+        userId: collections.userId,
+        title: collections.title,
+        description: collections.description,
+        isPublic: collections.isPublic,
+        createdAt: collections.createdAt,
+        updatedAt: collections.updatedAt,
+    
+        //  total count
+        totalEntities: sql<number>`
+          (
+            SELECT COUNT(*)
+            FROM collection_entities ce
+            WHERE ce.collection_id = ${collections.id}
+          )
+        `,
+    
+        //  last 4 entities
+        entities: sql<string>`
+          (
+            SELECT COALESCE(
+              json_group_array(
+                json_object(
+                  'id', e.id,
+                  'imageUrl', e.image_url
+                )
+              ),
+              '[]'
+            )
+            FROM (
+              SELECT ce.entity_id
+              FROM collection_entities ce
+              WHERE ce.collection_id = ${collections.id}
+              ORDER BY ce.added_at DESC
+              LIMIT 4
+            ) AS sub
+            JOIN entities e ON e.id = sub.entity_id
+          )
+        `
+      })
       .from(collections)
       .where(and(eq(collections.userId, userId), eq(collections.isPublic, true)))
       .orderBy(desc(collections.createdAt))
       .limit(limit)
       .offset(offset);
+    
+    return result.map(c => ({
+      ...c,
+      entities: JSON.parse(c.entities || '[]')
+    }));
+    
   }
 
   async countPublicByUserId(userId: string): Promise<number> {

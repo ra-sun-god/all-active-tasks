@@ -3,7 +3,7 @@
     <div class="max-w-7xl mx-auto px-6 py-8">
 
       <!-- Header -->
-      <div class="flex justify-between items-center mb-8">
+      <div class="flex justify-between items-center mb-0">
         <div>
           <h1 class="text-2xl font-bold text-gray-900 tracking-tight">
             {{ $t('collections.myCollections') }}
@@ -38,6 +38,11 @@
           </button>
 
           <LangSwitch />
+        </div>
+      </div>
+      <div>
+        <div class="flex items-center gap-2 mb-8">
+          <Sharer :url="shareUrl" />
         </div>
       </div>
 
@@ -112,6 +117,7 @@ import { useAuth } from '../composables/useAuth'
 import type { Collection } from '~/types'
 import Swal from 'sweetalert2'
 import { push } from 'notivue'
+import Sharer from '~/components/Sharer.vue'
 
 const {
   collections: collectionList,
@@ -125,9 +131,18 @@ const {
   processingError: collectionOpError,
 } = useCollections()
 
+const { user } = useAuth()
+
 const { logout, loading } = useAuth()
 const showModal = ref(false)
 const selected = ref<Collection | null>(null)
+
+
+const shareUrl = computed(() =>
+  (typeof window !== 'undefined' && user.value != null)
+    ? `${window.location.origin}/public/${user.value.id}`
+    : ``
+)
 
 onMounted(() => fetchCollectionList())
 

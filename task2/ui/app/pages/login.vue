@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
 
-    <VueSpinner v-if="isLoading"" size="24"  color="#8B5CF6" />
+    <VueSpinner v-if="isInitialising" size="24"  color="#8B5CF6" />
 
     <!-- Card -->
     <div v-else class="w-full max-w-sm bg-white rounded-2xl shadow-xl shadow-gray-200/80 overflow-hidden">
@@ -62,7 +62,7 @@
             :disabled="loading"
             class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 shadow-sm shadow-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-150 mt-1"
           >
-            <VueSpinner v-if="loading"" size="24"  color="#8B5CF6" />
+            <VueSpinner v-if="loading" size="24"  color="#8B5CF6" />
             <span>{{ loading ? $t('common.loading') : $t('auth.loginBtn') }}</span>
           </button>
 
@@ -93,16 +93,21 @@ import { VueSpinner } from 'vue3-spinners';
 const { login, error, loading } = useAuth()
 const { fetchUser, isAuthenticated } = useAuth();
 
-const isLoading = ref(true)
+const isInitialising = ref(true)
 const form = reactive<Login>({ email: '', password: '' })
 
-onBeforeMount(async()=>{
-  isLoading.value = true
-  await fetchUser()
-  if(isAuthenticated) {
-    navigateTo("/")
-  } else {
-    isLoading.value = false
+onBeforeMount(async () => {
+  isInitialising.value = true
+
+  try {
+    await fetchUser()
+
+    if (isAuthenticated.value) {
+      navigateTo("/")
+      return
+    }
+  } finally {
+    isInitialising.value = false
   }
 })
 
