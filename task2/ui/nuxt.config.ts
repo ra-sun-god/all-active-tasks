@@ -30,7 +30,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      apiBase: process.env.PUBLIC_API_BASE || "http://localhost:3030/api"
+      apiBase: process.env.PUBLIC_API_BASE || "https://task2-api.libertypie.com/api"
     }
   },
   nitro: {

@@ -17,7 +17,8 @@ const {
   port,
   sslCert,
   sslKey,
-  sessionSecret
+  sessionSecret,
+  corsOrigins
 } = serverConfig;
 
 const fastOpts: FastifyServerOptions = {
@@ -36,7 +37,7 @@ async function startServer() {
   
   // Register CORS first, before cookie/session
   await app.register(cors, {
-    origin: true, // explicit origin, not `true`, when using credentials
+    origin: corsOrigins, // explicit origin, not `true`, when using credentials
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
   });
