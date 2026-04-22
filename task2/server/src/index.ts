@@ -69,7 +69,7 @@ async function startServer() {
     cookie: {
       secure: isProduction,                 // HTTPS only in prod
       httpOnly: true,
-      sameSite: isProduction ? 'none' : 'lax',
+      sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     },
     //store
