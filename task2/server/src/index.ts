@@ -10,7 +10,7 @@ import { CreateCollectionRepository } from './core/collection-repository';
 import { CreateCollectionService } from './core/collection-service';
 import cors from '@fastify/cors'
 import { collectionRoutes } from './core/collection-route';
-//import sessionFileStore from 'session-file-store'
+import sessionFileStore from 'session-file-store'
 
 const isProduction = process.env.NODE_ENV != "development";
 
@@ -59,12 +59,12 @@ async function startServer() {
   await app.register(cookie);
 
   // set our sessions database 
-  /*
+  
     const FileStore = sessionFileStore(session as any)
-    const store =  store: new FileStore({
-    path: './.database/sessions',
+    const store =  new FileStore({
+      path: './.database/sessions',
     })
-  */
+  
   await app.register(session, {
     secret: sessionSecret,
     saveUninitialized: false,
@@ -74,7 +74,7 @@ async function startServer() {
       sameSite: 'none',      
       maxAge: 7 * 24 * 60 * 60 * 1000,
     },
-    //store
+    store
   });
   
   
