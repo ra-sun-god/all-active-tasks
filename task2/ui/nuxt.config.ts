@@ -1,12 +1,11 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  compatibility_flags = ["nodejs_compat"],
   modules: [
     '@nuxtjs/i18n',
     '@nuxtjs/tailwindcss',
     'notivue/nuxt',
-    "nitro-cloudflare-dev"
+    "nitro-cloudflare-dev",
   ],
   css: [
     'notivue/notification.css',
