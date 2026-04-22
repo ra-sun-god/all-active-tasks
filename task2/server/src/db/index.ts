@@ -8,6 +8,8 @@ import path from 'path';
 
 const dbPath = path.resolve(__dirname + "/../../.database/collections_db.sqlite")
 
+console.log("dbPath===>", dbPath)
+
 const sqlite = new Database(dbPath);
 export const db = drizzle(sqlite, {
   schema: { ...users, ...entities, ...collections }
