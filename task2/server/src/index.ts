@@ -67,10 +67,11 @@ async function startServer() {
   */
   await app.register(session, {
     secret: sessionSecret,
+    saveUninitialized: false,
     cookie: {
-      secure: isProduction,                 // HTTPS only in prod
+      secure: true,      
       httpOnly: true,
-      sameSite: isProduction ? 'none' : 'lax',
+      sameSite: 'none',      
       maxAge: 7 * 24 * 60 * 60 * 1000,
     },
     //store
