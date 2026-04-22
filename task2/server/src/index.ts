@@ -36,7 +36,7 @@ async function startServer() {
   
   // Register CORS first, before cookie/session
   await app.register(cors, {
-    origin: 'http://localhost:3000', // explicit origin, not `true`, when using credentials
+    origin: true, // explicit origin, not `true`, when using credentials
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
   });

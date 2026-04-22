@@ -1,8 +1,13 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-
-  modules: ['@nuxtjs/i18n', '@nuxtjs/tailwindcss', 'notivue/nuxt'],
+  compatibility_flags = ["nodejs_compat"],
+  modules: [
+    '@nuxtjs/i18n',
+    '@nuxtjs/tailwindcss',
+    'notivue/nuxt',
+    "nitro-cloudflare-dev"
+  ],
   css: [
     'notivue/notification.css',
     'notivue/animations.css'
@@ -29,6 +34,8 @@ export default defineNuxtConfig({
       apiBase: process.env.PUBLIC_API_BASE || "http://localhost:3030/api"
     }
   },
-
+  nitro: {
+     preset: 'cloudflare-pages'
+  },
   ssr: true
 })

@@ -96,8 +96,8 @@
 </template>
 
 <script setup lang="ts">
-import { push, useAuth } from '#imports';
 import type { Signup } from '~/types';
+import { push } from 'notivue'
 
 const { signup, error, loading } = useAuth();
 const form = reactive<Signup>({ name: "", password: "", email: "" })

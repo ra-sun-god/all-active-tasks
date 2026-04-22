@@ -76,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate } from '#imports';
+import { formatDate } from '~/utils'
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { Entity } from '~/types'

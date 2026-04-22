@@ -177,7 +177,7 @@ import { useCollections } from '~/composables/useCollections'
 import { useAuth } from '~/composables/useAuth'
 import Pagination from '~/components/Pagination.vue'
 import { push } from 'notivue'
-import { formatDate } from '#imports'
+import { formatDate } from '~/utils'
 
 const route = useRoute()
 const router = useRouter()
