@@ -73,6 +73,9 @@ npm run db:seed
 
 - url: https://task2.libertypie.com/
 
+- Frontend deployed on Cloudflare Pages 
+- Backend deployed on my VPS
+
 Login and Passwords Below
 
 ## 👤 Seeded Users (Development Only)
