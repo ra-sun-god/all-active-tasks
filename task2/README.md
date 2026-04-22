@@ -2,16 +2,16 @@
 
 ## Demo 
 
-- url: ()[https://task2.libertypie.com]
+- url: https://task2.libertypie.com
 
 - Frontend deployed on Cloudflare Pages 
 - Backend deployed on my VPS
 
 ### Public List example (no login)
-- (https://task2.libertypie.com/public/f10925ed-d6d7-4a41-9875-b2d7a9932cec)[https://task2.libertypie.com/public/f10925ed-d6d7-4a41-9875-b2d7a9932cec]
+- https://task2.libertypie.com/public/f10925ed-d6d7-4a41-9875-b2d7a9932cec
 
 ### Public collection example (no login)
-- (https://task2.libertypie.com/public/collection/c78dd1bb-2a72-401b-834c-e6e2a7b04422)[https://task2.libertypie.com/public/collection/c78dd1bb-2a72-401b-834c-e6e2a7b04422]
+- https://task2.libertypie.com/public/collection/c78dd1bb-2a72-401b-834c-e6e2a7b04422
 
 
 Login and Passwords Below
