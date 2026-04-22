@@ -90,7 +90,7 @@ export function useCollections() {
         body: { title, description, isPublic },
       })
 
-       await updateCollectionInPlace(newData.id, newData)
+       await updateCollectionsInPlace(newData.id, newData)
 
       collection.value = newData;
 
@@ -118,7 +118,7 @@ export function useCollections() {
 
       collection.value = newData;
 
-      await updateCollectionInPlace(newData.id, newData)
+      await updateCollectionsInPlace(newData.id, newData)
 
       return newData
     } catch (err: any) {
